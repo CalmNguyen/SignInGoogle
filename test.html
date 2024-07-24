@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Sign-In</title>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+
+<body>
+    <h1>Đăng nhập bằng Google</h1>
+    <div id="buttonDiv"></div>
+
+    <script>
+        function handleCredentialResponse(response) {
+            console.log("Encoded JWT ID token: " + response.credential);
+            // Gửi token đến server
+            fetch('https://localhost:7215/auth/SignInGoogle', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ token: response.credential })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Success:', data);
+                    // Xử lý dữ liệu từ server
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+        }
+
+        window.onload = function () {
+            google.accounts.id.initialize({
+                client_id: "357782744171-1gquhmc74dtduoathp257votigunti5p.apps.googleusercontent.com",
+                callback: handleCredentialResponse
+            });
+            google.accounts.id.renderButton(
+                document.getElementById("buttonDiv"),
+                { theme: "outline", size: "large" }  // Customization attributes
+            );
+            google.accounts.id.prompt(); // Hiển thị prompt đăng nhập
+        }
+    </script>
+</body>
+
+</html>
