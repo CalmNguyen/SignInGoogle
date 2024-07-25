@@ -7,8 +7,7 @@
 
 <body>
     <!-- Nút đăng nhập với Facebook -->
-    <fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
-    </fb:login-button>
+    <button onclick="fbLogin()">Login with Facebook</button>
 
     <!-- Div hiển thị trạng thái đăng nhập -->
     <div id="status"></div>
@@ -50,6 +49,17 @@
             FB.getLoginStatus(function (response) {
                 statusChangeCallback(response);
             });
+        }
+
+        // Thực hiện đăng nhập với Facebook
+        function fbLogin() {
+            FB.login(function(response) {
+                if (response.authResponse) {
+                    statusChangeCallback(response);
+                } else {
+                    document.getElementById('status').innerHTML = 'User cancelled login or did not fully authorize.';
+                }
+            }, {scope: 'public_profile,email'});
         }
 
         // Lấy thông tin người dùng từ API
