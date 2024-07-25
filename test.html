@@ -16,7 +16,7 @@
         function handleCredentialResponse(response) {
             console.log("Encoded JWT ID token: " + response.credential);
             // Gửi token đến server
-            fetch('https://localhost:5218/auth/SignInGoogle', {
+            fetch('https://localhost:7215/auth/SignInGoogle', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
