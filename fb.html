@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Facebook Login</title>
+</head>
+
+<body>
+    <!-- Nút đăng nhập với Facebook -->
+    <fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
+    </fb:login-button>
+
+    <!-- Div hiển thị trạng thái đăng nhập -->
+    <div id="status"></div>
+
+    <!-- Thêm SDK của Facebook -->
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
+    <script>
+        // Khởi tạo SDK
+        window.fbAsyncInit = function () {
+            FB.init({
+                appId: '4a2a1a35057f72833b74d358c3b88e14', // Thay bằng App ID của bạn
+                cookie: true,
+                xfbml: true,
+                version: 'v14.0' // Thay bằng phiên bản SDK hiện tại
+            });
+
+            FB.AppEvents.logPageView();
+
+            // Kiểm tra trạng thái đăng nhập
+            FB.getLoginStatus(function (response) {
+                statusChangeCallback(response);
+            });
+        };
+
+        // Gọi lại để xử lý trạng thái đăng nhập
+        function statusChangeCallback(response) {
+            if (response.status === 'connected') {
+                // Đã đăng nhập vào Facebook và ứng dụng của bạn
+                testAPI();
+            } else {
+                // Chưa đăng nhập vào Facebook hoặc ứng dụng của bạn
+                document.getElementById('status').innerHTML = 'Please log ' +
+                    'into this app.';
+            }
+        }
+
+        // Kiểm tra trạng thái đăng nhập
+        function checkLoginState() {
+            FB.getLoginStatus(function (response) {
+                statusChangeCallback(response);
+            });
+        }
+
+        // Lấy thông tin người dùng từ API
+        function testAPI() {
+            FB.api('/me', function (response) {
+                document.getElementById('status').innerHTML =
+                    'Thanks for logging in, ' + response.name + '!';
+            });
+        }
+    </script>
+</body>
+
+</html>
