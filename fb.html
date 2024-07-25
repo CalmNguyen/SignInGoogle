@@ -60,17 +60,22 @@
                 } else {
                     document.getElementById('status').innerHTML = 'User cancelled login or did not fully authorize.';
                 }
-            }, {scope: 'public_profile,email'});
+            }, {scope: 'public_profile,email,user_friends,user_birthday'});
         }
+        
+
 
         // Lấy thông tin người dùng từ API
         function testAPI() {
-            FB.api('/me', function (response) {
-                console.log(response)
+            FB.api('/me', { fields: 'name,email,birthday,friends' }, function(response) {
                 document.getElementById('status').innerHTML =
-                    'Thanks for logging in, ' + response.name + '!';
+                    'Thanks for logging in, ' + response.name + '!<br>' +
+                    'Email: ' + response.email + '<br>' +
+                    'Birthday: ' + response.birthday + '<br>' +
+                    'Friends: ' + response.friends.summary.total_count;
             });
         }
+
     </script>
 </body>
 
